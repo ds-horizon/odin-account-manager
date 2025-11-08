@@ -299,12 +299,12 @@ class ProviderServiceAccountServiceV1IT {
   void testCreateProviderServiceAccountSuccess(VertxTestContext testContext) {
     // Arrange
     RxProviderServiceAccountServiceGrpc.RxProviderServiceAccountServiceStub
-        rxProviderServiceAccountServiceStub = createStubWithOrgId("1001");
+        rxProviderServiceAccountServiceStub = createStubWithOrgId("1002");
 
     CreateProviderServiceAccountRequest request =
         CreateProviderServiceAccountRequest.newBuilder()
             .setProviderServiceName("TEST_SERVICE_1")
-            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_2")
+            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
             .setProviderServiceData("{}")
             .setIsActive(true)
             .build();
@@ -326,12 +326,12 @@ class ProviderServiceAccountServiceV1IT {
   void testCreateProviderServiceAccountAlreadyExistsFailure(VertxTestContext testContext) {
     // Arrange
     RxProviderServiceAccountServiceGrpc.RxProviderServiceAccountServiceStub
-        rxProviderServiceAccountServiceStub = createStubWithOrgId("1001");
+        rxProviderServiceAccountServiceStub = createStubWithOrgId("1002");
 
     CreateProviderServiceAccountRequest request =
         CreateProviderServiceAccountRequest.newBuilder()
-            .setProviderServiceName("TEST_SERVICE_1")
-            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_1")
+            .setProviderServiceName("TEST_SERVICE_2")
+            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
             .setProviderServiceData("{}")
             .setIsActive(true)
             .build();
@@ -351,11 +351,11 @@ class ProviderServiceAccountServiceV1IT {
             err ->
                 assertThat(((StatusRuntimeException) err).getStatus().getDescription())
                     .isEqualTo(
-                        "Provider service account already exists for service 'TEST_SERVICE_1' and account 'TEST_PROVIDER_ACCOUNT_1'"))
+                        "Provider service account already exists for service 'TEST_SERVICE_2' and account 'TEST_PROVIDER_ACCOUNT_3'"))
         .subscribe(
             record ->
                 testContext.failNow(
-                    "Provider service account already exists for service 'TEST_SERVICE_1' and account 'TEST_PROVIDER_ACCOUNT_1'"),
+                    "Provider service account already exists for service 'TEST_SERVICE_2' and account 'TEST_PROVIDER_ACCOUNT_3'"),
             err -> testContext.completeNow());
   }
 
@@ -369,7 +369,7 @@ class ProviderServiceAccountServiceV1IT {
     CreateProviderServiceAccountRequest request =
         CreateProviderServiceAccountRequest.newBuilder()
             .setProviderServiceName("TEST_SERVICE_1")
-            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_1")
+            .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
             .setProviderServiceData("{}")
             .setIsActive(true)
             .build();

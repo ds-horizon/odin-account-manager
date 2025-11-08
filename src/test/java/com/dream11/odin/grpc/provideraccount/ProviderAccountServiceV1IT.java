@@ -261,7 +261,7 @@ class ProviderAccountServiceV1IT {
                   "TEST_PROVIDER_2",
                   "TEST_PROVIDER_CATEGORY_2",
                   linkedProviderAccountData);
-              assertThat(linkedProviderAccount.getServicesCount()).isOne();
+              assertThat(linkedProviderAccount.getServicesCount()).isZero();
             })
         .subscribe(record -> testContext.completeNow(), testContext::failNow);
   }
@@ -451,7 +451,7 @@ class ProviderAccountServiceV1IT {
                   "TEST_PROVIDER_2",
                   "TEST_PROVIDER_CATEGORY_2",
                   linkedProviderAccountData);
-              assertThat(linkedProviderAccount.getServicesCount()).isOne();
+              assertThat(linkedProviderAccount.getServicesCount()).isZero();
             })
         .subscribe(record -> testContext.completeNow(), testContext::failNow);
   }

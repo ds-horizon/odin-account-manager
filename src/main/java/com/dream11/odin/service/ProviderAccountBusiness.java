@@ -37,7 +37,7 @@ public class ProviderAccountBusiness {
   final MysqlClient mysqlClient;
 
   public Single<GetProviderAccountResponse> getProviderAccount(
-      Long orgId, String name, Boolean fetchLinkedAccounts) {
+      Long orgId, String name, boolean fetchLinkedAccounts) {
     return providerAccountDao
         .getProviderAccount(orgId, name, fetchLinkedAccounts)
         .doOnSuccess(
@@ -56,7 +56,7 @@ public class ProviderAccountBusiness {
 
   private GetProviderAccountResponse buildGetProviderAccountResponse(
       List<ProviderAccount> providerAccounts,
-      Boolean fetchLinkedAccounts,
+      boolean fetchLinkedAccounts,
       Predicate<ProviderAccount> isRequestedAccount) {
     GetProviderAccountResponse.Builder getProviderAccountResponseBuilder =
         GetProviderAccountResponse.newBuilder();
@@ -77,7 +77,7 @@ public class ProviderAccountBusiness {
   }
 
   public Single<GetAllProviderAccountsResponse> getAllProviderAccounts(
-      Long orgId, Boolean fetchLinkedAccounts) {
+      Long orgId, boolean fetchLinkedAccounts) {
     return providerAccountDao
         .getAllProviderAccounts(orgId, fetchLinkedAccounts)
         .doOnSuccess(providerAccounts -> {})
@@ -87,7 +87,7 @@ public class ProviderAccountBusiness {
   }
 
   public Single<GetProviderAccountsResponse> getProviderAccounts(
-      Long orgId, List<String> name, Boolean fetchLinkedAccounts) {
+      Long orgId, List<String> name, boolean fetchLinkedAccounts) {
     return providerAccountDao
         .getProviderAccounts(orgId, name, fetchLinkedAccounts)
         .doOnSuccess(
@@ -95,10 +95,9 @@ public class ProviderAccountBusiness {
               if (providerAccounts.isEmpty()) {
                 throw ExceptionUtil.getException(OdinError.ACCOUNT_DOES_NOT_EXIST, name);
               }
-              if (Boolean.TRUE.equals(!fetchLinkedAccounts)
+              if (!fetchLinkedAccounts
                   && !name.isEmpty()
                   && name.size() != providerAccounts.size()) {
-
                 Set<String> difference =
                     SetUtils.difference(
                         new HashSet<>(name),
@@ -116,7 +115,7 @@ public class ProviderAccountBusiness {
   }
 
   private GetAllProviderAccountsResponse buildGetAllProviderAccountsResponse(
-      Boolean fetchLinkedAccounts, List<ProviderAccount> providerAccounts) {
+      boolean fetchLinkedAccounts, List<ProviderAccount> providerAccounts) {
     List<GetProviderAccountResponse> getProviderAccountResponses;
     getProviderAccountResponses =
         providerAccounts.stream()
@@ -133,7 +132,7 @@ public class ProviderAccountBusiness {
   private GetProviderAccountResponse buildGetAllProviderAccountResponse(
       ProviderAccount curProviderAccount,
       List<ProviderAccount> providerAccounts,
-      Boolean fetchLinkedAccounts) {
+      boolean fetchLinkedAccounts) {
     GetProviderAccountResponse.Builder getProviderAccountResponseBuilder =
         GetProviderAccountResponse.newBuilder();
 
@@ -143,14 +142,14 @@ public class ProviderAccountBusiness {
             providerAccounts);
 
     getProviderAccountResponseBuilder.setAccount(curProviderAccount);
-    if (Boolean.TRUE.equals(fetchLinkedAccounts)) {
+    if (fetchLinkedAccounts) {
       getProviderAccountResponseBuilder.addAllLinkedAccounts(linkedAccounts);
     }
     return getProviderAccountResponseBuilder.build();
   }
 
   private GetProviderAccountsResponse buildGetProviderAccountsResponse(
-      List<String> name, Boolean fetchLinkedAccounts, List<ProviderAccount> providerAccounts) {
+      List<String> name, boolean fetchLinkedAccounts, List<ProviderAccount> providerAccounts) {
     List<GetProviderAccountResponse> getProviderAccountResponses;
     if (name.isEmpty()) {
       getProviderAccountResponses =

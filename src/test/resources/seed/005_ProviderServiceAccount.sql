@@ -12,3 +12,7 @@ INTO provider_service_account(id, version, provider_account_id, provider_service
 REPLACE
 INTO provider_service_account(id, version, provider_account_id, provider_service_id, org_id, provider_service_data, is_active) VALUES (1003, 1,
   1001, 1001, 1001, '{"name":"testServiceInactive","roles":["testRole1", "testRole2"]}', false);
+
+REPLACE
+INTO provider_service_account(id, version, provider_account_id, provider_service_id, org_id, provider_service_data) VALUES(1004, 1,
+  1003, 1002, 1001, '{"repository":1}');

@@ -36,7 +36,7 @@ public class ProviderAccountDao {
   final MysqlClient mysqlClient;
 
   public Single<List<ProviderAccount>> getProviderAccount(
-      Long orgId, String name, Boolean fetchLinkedAccounts) {
+      Long orgId, String name, boolean fetchLinkedAccounts) {
     String query = MysqlQuery.GET_PROVIDER_ACCOUNT_AND_SERVICES_QUERY.apply("pa.name = ?");
     return this.mysqlClient
         .getSlaveClient()
@@ -85,7 +85,7 @@ public class ProviderAccountDao {
   }
 
   public Single<List<ProviderAccount>> getAllProviderAccounts(
-      Long orgId, Boolean fetchLinkedAccounts) {
+      Long orgId, boolean fetchLinkedAccounts) {
     String query = MysqlQuery.GET_ALL_PROVIDER_ACCOUNT_AND_SERVICES_QUERY.apply("");
     return this.mysqlClient
         .getSlaveClient()
@@ -95,7 +95,7 @@ public class ProviderAccountDao {
   }
 
   public Single<List<ProviderAccount>> getProviderAccounts(
-      Long orgId, List<String> name, Boolean fetchLinkedAccounts) {
+      Long orgId, List<String> name, boolean fetchLinkedAccounts) {
 
     if (name.size() > MAX_NO_OF_PROVIDER_ACCOUNT_NAMES) {
       throw ExceptionUtil.getException(

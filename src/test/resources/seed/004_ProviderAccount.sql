@@ -12,3 +12,10 @@ VALUES (1002, 1, 1002, 1001, 'TEST_PROVIDER_ACCOUNT_2',
         '{"url":"https://some-url.com","credentials":{"username":"username","password":"password"}}') AS new
 ON DUPLICATE KEY
 UPDATE id = new.id, version = new.version, name = new.name, provider_id = new.provider_id, org_id = new.org_id, provider_data= new.provider_data;
+
+-- For ProviderServiceAccountServiceV1IT
+INSERT INTO provider_account(id, version, provider_id, org_id, name, provider_data)
+VALUES (1003, 1, 1002, 1002, 'TEST_PROVIDER_ACCOUNT_3',
+        '{"url":"https://some-url.com","credentials":{"username":"username","password":"password"}}') AS new
+ON DUPLICATE KEY
+UPDATE id = new.id, version = new.version, name = new.name, provider_id = new.provider_id, org_id = new.org_id, provider_data= new.provider_data;
