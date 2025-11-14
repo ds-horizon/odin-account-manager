@@ -55,6 +55,17 @@ jobs:
       - name: Update version pom.xml
         run: mvn --no-transfer-progress versions:set -DnewVersion=${{ steps.get_version.outputs.VERSION }}
 
+      - name: Test
+        run: mvn --no-transfer-progress clean verify
+
+      - name: Publish Test Report
+        uses: dorny/test-reporter@dc3a92680fcc15842eef52e8c4606ea7ce6bd3f3 # v2.1.1
+        if: success() || failure()
+        with:
+          name: Junit Tests
+          path: "target/**/TEST-*.xml"
+          reporter: java-junit
+
       - name: Upload JAR to Release
         uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836 #v2.3.3
         with:
