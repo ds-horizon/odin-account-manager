@@ -70,7 +70,7 @@ jobs:
         uses: softprops/action-gh-release@6cbd405e2c4e67a21c47fa9e383d020e4e28b836 #v2.3.3
         with:
           token: ${{ secrets.GH_BOT_TOKEN }}
-          files: ./target/${{ env.ARTIFACT_NAME }}.jar
+          files: ./target/${{ env.ARTIFACT_NAME }}/${{ env.ARTIFACT_NAME }}-fat.jar
           fail_on_unmatched_files: true
           overwrite_files: false
 
