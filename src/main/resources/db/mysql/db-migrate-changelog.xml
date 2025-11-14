@@ -7,7 +7,6 @@
   <!-- Run schema migrations -->
   <includeAll path="migrations" relativeToChangelogFile="true"/>
 
-  <!-- TODO add seed data -->
   <!-- Run seeds only with context=seed -->
-  <!--  <includeAll path="seed" relativeToChangelogFile="true" context="seed"/>-->
+    <includeAll path="seed" relativeToChangelogFile="true" context="seed"/>
 </databaseChangeLog>
