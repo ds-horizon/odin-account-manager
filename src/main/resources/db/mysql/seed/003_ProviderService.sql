@@ -313,7 +313,7 @@ INSERT INTO `provider_service`
              },
              "password": {
                "type": "string"
-             }
+             },
              "insecure": {
                "type": "boolean"
              },
