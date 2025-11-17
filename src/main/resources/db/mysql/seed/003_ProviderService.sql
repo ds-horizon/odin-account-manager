@@ -5,7 +5,7 @@ INSERT INTO `provider_service`
   VALUES (1, NOW(), NOW(), 1, 'EKS', '{
     "type": "object",
     "required": [
-      "clusters",
+      "clusters"
     ],
     "properties": {
       "clusters": {
