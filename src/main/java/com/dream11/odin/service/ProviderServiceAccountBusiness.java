@@ -14,7 +14,6 @@ import com.dream11.odin.grpc.psa.v1.CreateProviderServiceResponse;
 import com.dream11.odin.grpc.psa.v1.GetProviderServiceAccountResponse;
 import com.google.inject.Inject;
 import io.reactivex.Single;
-import io.vertx.core.json.JsonObject;
 import io.vertx.grpc.ContextServerInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -118,7 +117,7 @@ public class ProviderServiceAccountBusiness {
     if (ContextServerInterceptor.get(Constants.ORGANIZATION_HEADER) == null) {
       return Single.error(ExceptionUtil.getException(OdinError.ORGANIZATION_HEADER_NOT_FOUND));
     }
-    if (request.getName() == null || request.getName().trim().isEmpty()) {
+    if (request.getName().trim().isEmpty()) {
       return Single.error(
           ExceptionUtil.getException(OdinError.PROVIDER_SERVICE_CATEGORY_NAME_NOT_FOUND));
     }
@@ -158,9 +157,7 @@ public class ProviderServiceAccountBusiness {
                                                       .createProviderServiceAccount(
                                                           serviceId,
                                                           accountId,
-                                                          new JsonObject(
-                                                              validatedRequest
-                                                                  .getProviderServiceData()),
+                                                          validatedRequest.getProviderServiceData(),
                                                           ContextServerInterceptor.get(
                                                               Constants.ORGANIZATION_HEADER),
                                                           validatedRequest.getIsActive())
@@ -201,10 +198,6 @@ public class ProviderServiceAccountBusiness {
     }
     if (request.getProviderAccountName().trim().isEmpty()) {
       return Single.error(ExceptionUtil.getException(OdinError.PROVIDER_ACCOUNT_NAME_NOT_FOUND));
-    }
-    if (request.getProviderServiceData().trim().isEmpty()) {
-      return Single.error(
-          ExceptionUtil.getException(OdinError.PROVIDER_SERVICE_ACCOUNT_DATA_NOT_FOUND));
     }
     return Single.just(request);
   }

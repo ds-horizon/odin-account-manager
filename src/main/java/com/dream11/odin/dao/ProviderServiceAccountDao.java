@@ -15,7 +15,6 @@ import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.vertx.core.json.JsonObject;
 import io.vertx.reactivex.sqlclient.Row;
 import io.vertx.reactivex.sqlclient.RowSet;
 import io.vertx.reactivex.sqlclient.Tuple;
@@ -40,24 +39,26 @@ public class ProviderServiceAccountDao {
   private ProviderServiceAccountEnriched buildServiceProviderAccountEnriched(RowSet<Row> rowSet)
       throws InvalidProtocolBufferException {
     Row row = rowSet.iterator().next();
-    JsonObject providerAccountJson =
-        new JsonObject()
-            .put("name", row.getString("provider_name"))
-            .put("provider", row.getString("provider"))
-            .put("category", row.getString("provider_category"))
-            .put("data", row.getJsonObject("provider_data"));
+    ProviderAccount providerAccount =
+        ProviderAccount.newBuilder()
+            .setName(row.getString("provider_name"))
+            .setProvider(row.getString("provider"))
+            .setCategory(row.getString("provider_category"))
+            .setData(
+                JsonUtil.jsonToProtoBuilder(
+                    row.getJsonObject("provider_data"), Struct.newBuilder()))
+            .build();
 
-    JsonObject providerServiceAccountJson =
-        new JsonObject()
-            .put("name", row.getString("name"))
-            .put("category", row.getString("category"))
-            .put("data", row.getJsonObject("data"))
-            .put("id", row.getLong("id"));
+    ProviderServiceAccount providerServiceAccount =
+        ProviderServiceAccount.newBuilder()
+            .setId(row.getLong("id"))
+            .setName(row.getString("name"))
+            .setCategory(row.getString("category"))
+            .setData(JsonUtil.jsonToProtoBuilder(row.getJsonObject("data"), Struct.newBuilder()))
+            .build();
     return ProviderServiceAccountEnriched.newBuilder()
-        .setAccount(JsonUtil.jsonToProtoBuilder(providerAccountJson, ProviderAccount.newBuilder()))
-        .setService(
-            JsonUtil.jsonToProtoBuilder(
-                providerServiceAccountJson, ProviderServiceAccount.newBuilder()))
+        .setAccount(providerAccount)
+        .setService(providerServiceAccount)
         .build();
   }
 
@@ -178,12 +179,15 @@ public class ProviderServiceAccountDao {
             });
   }
 
+  @SneakyThrows
   public Single<Boolean> createProviderServiceAccount(
-      Long serviceId, Long accountId, JsonObject serviceData, Long orgId, Boolean isActive) {
+      Long serviceId, Long accountId, Struct serviceData, Long orgId, Boolean isActive) {
     return this.mysqlClient
         .getMasterClient()
         .preparedQuery(MysqlQuery.CREATE_PROVIDER_SERVICE_ACCOUNT_QUERY)
-        .rxExecute(Tuple.of(serviceId, accountId, serviceData, orgId, isActive))
+        .rxExecute(
+            Tuple.of(
+                serviceId, accountId, JsonFormat.printer().print(serviceData), orgId, isActive))
         .map(
             rowSet -> {
               if (rowSet.rowCount() == 0) {

@@ -10,12 +10,9 @@ import com.dream11.odin.dto.v1.ProviderServiceAccount;
 import com.dream11.odin.error.OdinError;
 import com.dream11.odin.util.JsonUtil;
 import com.google.inject.Inject;
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
 import io.reactivex.Single;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import io.vertx.mysqlclient.MySQLException;
 import io.vertx.reactivex.mysqlclient.MySQLClient;
 import io.vertx.reactivex.sqlclient.Row;
@@ -45,40 +42,34 @@ public class ProviderAccountDao {
         .map(this::buildProviderAccount);
   }
 
-  private List<ProviderAccount> buildProviderAccount(RowSet<Row> rowSet)
-      throws InvalidProtocolBufferException {
+  private List<ProviderAccount> buildProviderAccount(RowSet<Row> rowSet) {
     // key: provider_account_name, value: provider_account builder
     Map<String, ProviderAccount.Builder> providerAccountBuilderMap = new HashMap<>();
     for (Row row : rowSet) {
       String providerAccountName = row.getString("name");
-      if (!providerAccountBuilderMap.containsKey(providerAccountName)) {
-        JsonObject jsonObject =
-            new JsonObject()
-                .put("name", providerAccountName)
-                .put("provider", row.getString("provider"))
-                .put("category", row.getString("provider_category"))
-                .put("data", row.getJsonObject("provider_data"))
-                .put("default", row.getBoolean("is_default"))
-                .put("id", row.getInteger("id"));
-
-        jsonObject.put("linked_provider_account_ids", new JsonArray());
-
-        providerAccountBuilderMap.put(
-            providerAccountName,
-            JsonUtil.jsonToProtoBuilder(jsonObject, ProviderAccount.newBuilder()));
-      }
+      providerAccountBuilderMap.computeIfAbsent(
+          providerAccountName,
+          k ->
+              ProviderAccount.newBuilder()
+                  .setName(providerAccountName)
+                  .setProvider(row.getString("provider"))
+                  .setCategory(row.getString("provider_category"))
+                  .setData(
+                      JsonUtil.jsonToProtoBuilder(
+                          row.getJsonObject("provider_data"), Struct.newBuilder()))
+                  .setDefault(row.getBoolean("is_default"))
+                  .setId(row.getInteger("id")));
 
       if (row.getString("provider_service_name") != null) {
-        JsonObject jsonObject =
-            new JsonObject()
-                .put("name", row.getString("provider_service_name"))
-                .put("category", row.getString("provider_service_category"))
-                .put("data", row.getJsonObject("provider_service_data"))
-                .put("id", row.getLong("provider_service_id"));
-        providerAccountBuilderMap
-            .get(providerAccountName)
-            .addServices(
-                JsonUtil.jsonToProtoBuilder(jsonObject, ProviderServiceAccount.newBuilder()));
+        ProviderServiceAccount.Builder serviceBuilder =
+            ProviderServiceAccount.newBuilder()
+                .setName(row.getString("provider_service_name"))
+                .setCategory(row.getString("provider_service_category"))
+                .setData(
+                    JsonUtil.jsonToProtoBuilder(
+                        row.getJsonObject("provider_service_data"), Struct.newBuilder()))
+                .setId(row.getLong("provider_service_id"));
+        providerAccountBuilderMap.get(providerAccountName).addServices(serviceBuilder);
       }
     }
     return providerAccountBuilderMap.values().stream().map(ProviderAccount.Builder::build).toList();

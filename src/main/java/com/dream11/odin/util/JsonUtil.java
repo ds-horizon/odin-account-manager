@@ -1,9 +1,9 @@
 package com.dream11.odin.util;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import com.google.protobuf.util.JsonFormat;
 import io.vertx.core.json.JsonObject;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -20,8 +20,8 @@ public class JsonUtil {
     return cur;
   }
 
-  public <T extends Message.Builder> T jsonToProtoBuilder(JsonObject json, T builder)
-      throws InvalidProtocolBufferException {
+  @SneakyThrows
+  public <T extends Message.Builder> T jsonToProtoBuilder(JsonObject json, T builder) {
     JsonFormat.parser().ignoringUnknownFields().merge(json.encode(), builder);
     return builder;
   }

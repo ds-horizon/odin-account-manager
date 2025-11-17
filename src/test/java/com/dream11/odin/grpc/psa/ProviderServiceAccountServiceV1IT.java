@@ -305,7 +305,7 @@ class ProviderServiceAccountServiceV1IT {
         CreateProviderServiceAccountRequest.newBuilder()
             .setProviderServiceName("TEST_SERVICE_1")
             .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
-            .setProviderServiceData("{}")
+            .setProviderServiceData(Struct.newBuilder().build())
             .setIsActive(true)
             .build();
 
@@ -332,7 +332,7 @@ class ProviderServiceAccountServiceV1IT {
         CreateProviderServiceAccountRequest.newBuilder()
             .setProviderServiceName("TEST_SERVICE_2")
             .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
-            .setProviderServiceData("{}")
+            .setProviderServiceData(Struct.newBuilder().build())
             .setIsActive(true)
             .build();
 
@@ -370,7 +370,7 @@ class ProviderServiceAccountServiceV1IT {
         CreateProviderServiceAccountRequest.newBuilder()
             .setProviderServiceName("TEST_SERVICE_1")
             .setProviderAccountName("TEST_PROVIDER_ACCOUNT_3")
-            .setProviderServiceData("{}")
+            .setProviderServiceData(Struct.newBuilder().build())
             .setIsActive(true)
             .build();
 

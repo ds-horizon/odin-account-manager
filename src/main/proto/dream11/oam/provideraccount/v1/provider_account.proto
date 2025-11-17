@@ -44,7 +44,7 @@ message GetProviderAccountsResponse {
 }
 
 message CreateProviderCategoryRequest {
-  string name = 2;
+  string name = 1;
 }
 
 message CreateProviderCategoryResponse {
@@ -52,9 +52,9 @@ message CreateProviderCategoryResponse {
 }
 
 message CreateProviderRequest {
-  string name = 2;
-  string provider_category_name = 3;
-  google.protobuf.Struct data_schema = 4;
+  string name = 1;
+  string provider_category_name = 2;
+  google.protobuf.Struct data_schema = 3;
 }
 
 message CreateProviderResponse {
@@ -62,11 +62,11 @@ message CreateProviderResponse {
 }
 
 message CreateProviderAccountRequest {
-  string name = 2;
-  string provider_name = 3;
-  google.protobuf.Struct provider_data = 4;
-  bool is_default = 5;
-  repeated string linked_accounts = 6;
+  string name = 1;
+  string provider_name = 2;
+  google.protobuf.Struct provider_data = 3;
+  bool is_default = 4;
+  repeated string linked_accounts = 5;
 }
 
 message CreateProviderAccountResponse {
