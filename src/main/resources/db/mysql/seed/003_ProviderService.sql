@@ -376,9 +376,101 @@ INSERT INTO `provider_service`
                "type": "string"
              }
            }
-         }', 3, 4)
-
-    AS NEW
+         }', 3, 4),
+         (12, NOW(), NOW(), 1, 'Kind', '{
+           "type": "object",
+           "required": [
+             "clusters"
+           ],
+           "properties": {
+             "clusters": {
+               "type": "array",
+               "items": {
+                 "type": "object",
+                 "required": [
+                     "name",
+                     "kubeconfig"
+                 ],
+                 "properties": {
+                   "name": {
+                     "type": "string"
+                   },
+                   "kubeconfig": {
+                     "type": "string"
+                   },
+                   "namespaceConfig": {
+                     "type": "object",
+                     "required": [
+                       "provider"
+                     ],
+                     "properties": {
+                       "provider": {
+                         "type": "object",
+                         "required": [
+                             "name",
+                             "config"
+                         ],
+                         "properties": {
+                           "name": {
+                             "type": "string"
+                           },
+                           "config": {
+                             "type": "object"
+                           }
+                         }
+                       }
+                     }
+                   },
+                   "labels": {
+                     "type": "object"
+                   }
+                 }
+               }
+             },
+             "pullSecrets": {
+                 "type": "array"
+             },
+             "serviceAnnotations": {
+                 "type": "object"
+             },
+             "environmentVariables": {
+                 "type": "object"
+             },
+             "serviceAccountAnnotations": {
+                 "type": "object"
+             }
+           }
+         }', 4, 1),
+         (13, NOW(), NOW(), 1, 'DockerRegistry', '{
+           "type": "object",
+           "required": [
+             "server",
+             "registry",
+             "username",
+             "password"
+           ],
+           "properties": {
+             "server": {
+               "type": "string"
+             },
+             "registry": {
+               "type": "string"
+             },
+             "username": {
+               "type": "string"
+             },
+             "password": {
+               "type": "string"
+             },
+             "insecure": {
+               "type": "boolean"
+             },
+             "allowPush": {
+               "type": "boolean "
+             }
+           }
+         }', 4, 9)
+AS NEW
 ON DUPLICATE KEY UPDATE id                           = NEW.id,
                         version                      = NEW.version,
                         name                         = NEW.name,

@@ -46,13 +46,27 @@ INSERT INTO `provider`
     }
     }'),
     (3, NOW(), NOW(), 1, 'Odin', 4, '{
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "object"
-              }
-            }
-          }')
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        }
+      }
+    }'),
+    (4, NOW(), NOW(), 1, 'local', 4, '{
+       "type": "object",
+       "properties": {
+         "description": {
+           "type": "string"
+         },
+         "homeDirectoryMountPath": {
+           "type": "string"
+         }
+       },
+       "required": [
+         "homeDirectoryMountPath"
+       ]
+     }')
 AS NEW
 ON DUPLICATE KEY
   UPDATE id                   = NEW.id,
