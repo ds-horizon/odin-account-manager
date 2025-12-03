@@ -2,27 +2,18 @@
 
 Odin Account Manager is a gRPC application server that hosts data for cloud accounts like AWS, GCP, and other provider services. This documentation provides a comprehensive overview of the database schema and API usage.
 
-## Overview
-
-The system is designed around a hierarchical structure where:
-
-- **Providers** (like AWS for Cloud, JFrog for Artifactory, etc.) are main categories that have multiple provider services linked to them
-- **Provider Accounts** are instances of providers (e.g., AWS Production Account)
-- **Provider Services** are specific services within a provider (e.g., EC2, S3 within AWS)
-- **Provider Service Accounts** are instances of provider services linked to provider accounts
-
 ## Schema Entities
 
-### Core Entities
+The system is built around a hierarchical structure with the following core entities:
 
-1. **[Provider Category](./docs/provider-category.md)** - Main categories for organizing providers (CLOUD, ARTIFACTORY, MONITORING, etc.)
-2. **[Provider](./docs/provider.md)** - Providers like AWS, GCP, Jfrog with their data schemas
-3. **[Provider Account](./docs/provider-account.md)** - Instances of providers with specific configurations
-4. **[Provider Service Category](./docs/provider-service-category.md)** - Categories for organizing provider services
-5. **[Provider Service](./docs/provider-service.md)** - Specific services within providers (EC2, S3, etc.)
-6. **[Provider Service Account](./docs/provider-service-account.md)** - Instances of provider services
+1. **[Provider Category](./docs/provider-category.md)** - Top-level classifications for organizing providers (CLOUD, ARTIFACTORY, MONITORING, etc.)
+2. **[Provider](./docs/provider.md)** - Specific providers within categories like AWS, GCP, JFrog with their data schemas
+3. **[Provider Account](./docs/provider-account.md)** - Instances of providers with specific configurations (e.g., AWS Production Account)
+4. **[Provider Service Category](./docs/provider-service-category.md)** - Classifications for organizing provider services (KUBERNETES, VM, STORAGE, etc.)
+5. **[Provider Service](./docs/provider-service.md)** - Specific services within providers (EC2, S3, EKS, etc.)
+6. **[Provider Service Account](./docs/provider-service-account.md)** - Instances of services linked to provider accounts
 
-## Entity Relationships
+### Entity Relationships
 
 ![Database Schema Diagram](./.images/schema.png)
 
@@ -73,15 +64,6 @@ grpcurl -plaintext \
   localhost:8080 \
   dream11.oam.provideraccount.v1.ProviderAccountService/GetAllProviderAccounts
 ```
-
-## Navigation
-
-- [Provider Category](./docs/provider-category.md)
-- [Provider](./docs/provider.md)
-- [Provider Account](./docs/provider-account.md)
-- [Provider Service Category](./docs/provider-service-category.md)
-- [Provider Service](./docs/provider-service.md)
-- [Provider Service Account](./docs/provider-service-account.md)
 
 ## Additional Resources
 
